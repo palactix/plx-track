@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnalyticsController;
 use App\Models\Link;
 use App\Models\Click;
 use Illuminate\Support\Facades\Route;
@@ -9,9 +10,7 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::get('/analytics', function () {
-    return view('analytics');
-})->name('analytics');
+Route::get('/analytics/{shortCode}', [AnalyticsController::class, 'show'])->name('analytics');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -34,8 +33,8 @@ Route::get('/{shortCode}', function (string $shortCode) {
     
     // Check if link is password protected
     if ($link->is_password_protected) {
-        // Handle password protection (for now, just redirect to a password page)
-        return redirect()->route('link.password', $shortCode);
+        // For now, just redirect to home with error - password protection can be implemented later
+        return redirect()->route('home')->with('error', 'This link requires a password.');
     }
     
     // Track the click

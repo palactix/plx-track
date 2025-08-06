@@ -21,6 +21,7 @@
                         <th class="text-left py-3 text-muted-foreground">Original URL</th>
                         <th class="text-center py-3 text-muted-foreground">Clicks (7d)</th>
                         <th class="text-right py-3 text-muted-foreground">Created</th>
+                        <th class="text-right py-3 text-muted-foreground">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +72,12 @@
                                         {{ $link['created_at']->format('M j, Y') }}
                                     </span>
                                 </div>
+                            </td>
+                            <td class="py-4 text-right">
+                                <a href="{{ route('analytics', $link['short_code']) }}" 
+                                   class="inline-flex items-center gap-2 text-purple-500 hover:text-purple-400 hover:bg-purple-500/10 transition-all duration-300 hover:scale-105 rounded-md px-3 py-1 text-sm font-medium">
+                                    📊 Analytics
+                                </a>
                             </td>
                         </tr>
                     @endforeach

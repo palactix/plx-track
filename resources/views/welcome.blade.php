@@ -15,9 +15,9 @@
         <h1 class="text-5xl font-bold text-foreground mb-4 leading-tight">
             Open Source Link Shortener
             <br />
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
+            <a href="https://palactix.com" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
                 by Palactix
-            </span>
+            </a>
         </h1>
 
         <p class="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
