@@ -53,36 +53,7 @@
     <div
         class="backdrop-blur-xl bg-card/60 border-border/30 p-6 mb-8 transition-all duration-500 hover:bg-card/70
       shadow-[0_20px_60px_rgba(0,0,0,0.15)] dark:shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
-        <h2 class="text-2xl font-bold text-foreground mb-6">Public Short Links</h2>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b border-border/50">
-                        <th class="text-left py-3 text-muted-foreground">Short URL</th>
-                        <th class="text-left py-3 text-muted-foreground">Original URL</th>
-                        <th class="text-right py-3 text-muted-foreground">Clicks (Last 7d.)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ([['short' => 'plx.bz/a.bc23', 'original' => 'https://github.com/palactix/url-shortener', 'clicks' => 3], ['short' => 'plx.bz/abc+av/cc3', 'original' => 'https://docs.palactix.com/getting-started', 'clicks' => 3], ['short' => 'plx.bz/View Analytics', 'original' => 'https://analytics.palactix.com', 'clicks' => 1]] as $link)
-                        <tr class="border-b border-border/30 hover:bg-purple-500/5 transition-all duration-300 group">
-                            <td class="py-4">
-                                <a href="#"
-                                    class="text-cyan-500 hover:text-cyan-400 transition-all duration-300 hover:scale-105 group-hover:underline font-medium">
-                                    {{ $link['short'] }}
-                                </a>
-                            </td>
-                            <td
-                                class="py-4 text-muted-foreground truncate max-w-xs group-hover:text-foreground/70 transition-colors duration-300">
-                                {{ $link['original'] }}</td>
-                            <td
-                                class="py-4 text-right text-foreground group-hover:text-foreground/90 transition-colors duration-300">
-                                {{ $link['clicks'] }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+        <livewire:public-links-table />
     </div>
 
     {{-- Call to Action --}}

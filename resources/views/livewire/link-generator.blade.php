@@ -73,7 +73,13 @@
                     wire:target="generateLink"
                 >
                     <span wire:loading.remove wire:target="generateLink">Generate Short Link</span>
-                    <span wire:loading wire:target="generateLink">Generating...</span>
+                    <span wire:loading wire:target="generateLink">
+                        @if($fetchingMetadata)
+                            Fetching metadata...
+                        @else
+                            Generating...
+                        @endif
+                    </span>
                 </button>
             </div>
 
@@ -126,11 +132,14 @@
 
                         {{-- Title --}}
                         <div>
-                            <label class="block text-sm text-muted-foreground mb-1">Title (Optional)</label>
+                            <label class="block text-sm text-muted-foreground mb-1">
+                                Title (Optional)
+                                <span class="text-xs text-purple-500">• Auto-detected if empty</span>
+                            </label>
                             <input 
                                 type="text" 
                                 wire:model="title" 
-                                placeholder="Give your link a title"
+                                placeholder="Give your link a title (or leave empty for auto-detection)"
                                 class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors"
                             >
                             @error('title') 
@@ -155,16 +164,26 @@
 
                     {{-- Description --}}
                     <div>
-                        <label class="block text-sm text-muted-foreground mb-1">Description (Optional)</label>
+                        <label class="block text-sm text-muted-foreground mb-1">
+                            Description (Optional)
+                            <span class="text-xs text-purple-500">• Auto-detected if empty</span>
+                        </label>
                         <textarea 
                             wire:model="description" 
-                            placeholder="Add a description for your link"
+                            placeholder="Add a description for your link (or leave empty for auto-detection)"
                             rows="2"
                             class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors resize-none"
                         ></textarea>
                         @error('description') 
                             <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
                         @enderror
+                    </div>
+
+                    {{-- Auto-metadata info --}}
+                    <div class="bg-purple-500/10 border border-purple-500/20 rounded-lg p-3">
+                        <p class="text-sm text-purple-700 dark:text-purple-300">
+                            💡 <strong>Smart Detection:</strong> If you leave title or description empty, we'll automatically fetch them from the webpage's meta tags for better link previews.
+                        </p>
                     </div>
                 </div>
             @endif

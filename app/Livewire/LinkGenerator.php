@@ -4,11 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Link;
 use App\Models\ClaimableSession;
+use App\Services\MetadataFetcher;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class LinkGenerator extends Component
 {
@@ -34,6 +36,7 @@ class LinkGenerator extends Component
     public ?Link $generatedLink = null;
     public bool $showAdvancedOptions = false;
     public string $mode = 'public'; // 'public' or 'authenticated'
+    public bool $fetchingMetadata = false;
     
     public function mount()
     {
@@ -53,12 +56,15 @@ class LinkGenerator extends Component
         // Generate unique short code
         $shortCode = $this->customAlias ?: $this->generateUniqueShortCode();
         
+        // Auto-fetch metadata if title/description are empty
+        $metadata = $this->getMetadataForLink();
+        
         // Create the link
         $linkData = [
             'short_code' => $shortCode,
             'original_url' => $this->longUrl,
-            'title' => $this->title ?: null,
-            'description' => $this->description ?: null,
+            'title' => $this->title ?: $metadata['title'],
+            'description' => $this->description ?: $metadata['description'],
             'password' => $this->password ? bcrypt($this->password) : null,
             'expires_at' => $this->expiresAt ? $this->expiresAt : null,
             'is_active' => true,
@@ -85,6 +91,33 @@ class LinkGenerator extends Component
         ]);
     }
     
+    protected function getMetadataForLink(): array
+    {
+        // If user has provided both title and description, don't fetch metadata
+        if ($this->title && $this->description) {
+            return ['title' => null, 'description' => null];
+        }
+        
+        try {
+            $this->fetchingMetadata = true;
+            
+            $metadataFetcher = new MetadataFetcher();
+            $metadata = $metadataFetcher->getTitleAndDescription($this->longUrl);
+            
+            return $metadata;
+            
+        } catch (\Exception $e) {
+            // If metadata fetching fails, return empty metadata
+            Log::warning('Failed to fetch metadata for URL: ' . $this->longUrl, [
+                'error' => $e->getMessage()
+            ]);
+            
+            return ['title' => null, 'description' => null];
+        } finally {
+            $this->fetchingMetadata = false;
+        }
+    }
+    
     public function toggleAdvancedOptions()
     {
         $this->showAdvancedOptions = !$this->showAdvancedOptions;
@@ -99,6 +132,7 @@ class LinkGenerator extends Component
         $this->description = '';
         $this->expiresAt = '';
         $this->showAdvancedOptions = false;
+        $this->fetchingMetadata = false;
     }
     
     public function createAnother()
