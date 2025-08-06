@@ -48,6 +48,19 @@ class User extends Authenticatable
     }
 
     /**
+     * Relationships
+     */
+    public function links()
+    {
+        return $this->hasMany(Link::class);
+    }
+
+    public function claimableSessions()
+    {
+        return $this->hasMany(ClaimableSession::class);
+    }
+
+    /**
      * Get the user's initials
      */
     public function initials(): string

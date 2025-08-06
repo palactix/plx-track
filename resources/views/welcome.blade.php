@@ -28,17 +28,7 @@
         <div
             class="backdrop-blur-xl bg-card/60 border-purple-500/20 p-8 mb-12 transition-all duration-500 hover:bg-card/70 hover:border-purple-500/30
         shadow-[0_20px_60px_rgba(147,51,234,0.15)] dark:shadow-[0_20px_60px_rgba(147,51,234,0.2)]">
-            <form class="flex flex-col sm:flex-row gap-4 mb-6" method="POST" action="#">
-                @csrf
-                <input type="text" name="long_url" placeholder="Enter a long URL" value="{{ old('long_url') }}"
-                    class="flex-1 backdrop-blur-md bg-background/60 border-purple-500/20 focus:bg-background/80 focus:border-purple-500/40 transition-all duration-300
-              shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.2)] rounded-md border px-3 py-2" />
-                <button type="submit"
-                    class="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white border-0 px-8 transition-all duration-300 hover:scale-105 rounded-md
-              shadow-[0_8px_24px_rgba(147,51,234,0.3)] dark:shadow-[0_8px_24px_rgba(147,51,234,0.4)]">
-                    Generate Short Link
-                </button>
-            </form>
+            <livewire:link-generator />
         </div>
 
         {{-- Features --}}
