@@ -10,6 +10,8 @@ use Carbon\Carbon;
 class PublicLinksTable extends Component
 {
     public $links;
+    public $linksToShow = 5; // Start with 5 links
+    public $hasMoreLinks = false;
     
     public function mount()
     {
@@ -25,12 +27,20 @@ class PublicLinksTable extends Component
     
     public function loadLinks()
     {
+        // Get total count first
+        $totalLinks = Link::whereNull('user_id')
+            ->where('is_active', true)
+            ->whereNull('password')
+            ->count();
+            
+        $this->hasMoreLinks = $totalLinks > $this->linksToShow;
+        
         $this->links = Link::whereNull('user_id') // Only public links (not owned by users)
             ->where('is_active', true)
             ->whereNull('password') // Only non-password protected links for public display
             ->with('clicks') // Eager load clicks for counting
             ->latest('created_at')
-            ->take(10)
+            ->take($this->linksToShow)
             ->get()
             ->map(function ($link) {
                 return [
@@ -49,6 +59,12 @@ class PublicLinksTable extends Component
                     'has_description' => !empty($link->description),
                 ];
             });
+    }
+    
+    public function loadMore()
+    {
+        $this->linksToShow += 5; // Load 5 more links
+        $this->loadLinks();
     }
     
     private function getDomainFromUrl($url)
