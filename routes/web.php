@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\RedirectController;
 use App\Models\Link;
 use App\Models\Click;
 use Illuminate\Support\Facades\Route;
@@ -24,35 +25,11 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 });
 
+// Short link routes (must be near the end to catch remaining routes)
+// Route::get('/{shortCode}/preview', [RedirectController::class, 'preview'])->name('link.preview')->where('shortCode', '[a-zA-Z0-9-_]+');
+// Route::post('/{shortCode}/verify-password', [RedirectController::class, 'verifyPassword'])->name('link.verify-password')->where('shortCode', '[a-zA-Z0-9-_]+');
+
 // Short link redirection route (must be last to catch all remaining routes)
-Route::get('/{shortCode}', function (string $shortCode) {
-    $link = Link::where('short_code', $shortCode)
-                ->orWhere('custom_alias', $shortCode)
-                ->active()
-                ->firstOrFail();
-    
-    // Check if link is password protected
-    if ($link->is_password_protected) {
-        // For now, just redirect to home with error - password protection can be implemented later
-        return redirect()->route('home')->with('error', 'This link requires a password.');
-    }
-    
-    // Track the click
-    $clickData = [
-        'link_id' => $link->id,
-        'session_id' => session()->getId(),
-        'ip_address' => request()->ip(),
-        'user_agent' => request()->userAgent(),
-        'referrer' => request()->header('referer'),
-        'clicked_at' => now(),
-        // Add more tracking data as needed
-    ];
-    
-    Click::create($clickData);
-    $link->incrementClicks();
-    
-    // Redirect to the original URL
-    return redirect($link->original_url, 302);
-})->where('shortCode', '[a-zA-Z0-9-_]+');
+Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', '[a-zA-Z0-9-_]+')->name('link.redirect');
 
 require __DIR__.'/auth.php';

@@ -94,9 +94,22 @@ class Link extends Model
     }
 
     // Helper Methods
-    public function incrementClicks()
+    public function canBeAccessed(): bool
+    {
+        return $this->is_active && !$this->getIsExpiredAttribute();
+    }
+
+    public function isPasswordProtected(): bool
+    {
+        return !empty($this->password);
+    }
+
+    public function incrementClicks(bool $isUnique = false): void
     {
         $this->increment('clicks_count');
+        if ($isUnique) {
+            $this->increment('unique_click_count');
+        }
         $this->update(['last_clicked_at' => now()]);
     }
 

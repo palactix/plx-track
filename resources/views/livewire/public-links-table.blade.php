@@ -37,7 +37,7 @@
                                 <div class="flex-1 min-w-0">
                                     {{-- Short URL and Title --}}
                                     <div class="flex items-center gap-2 mb-1">
-                                        <a href="{{ $link['short_url'] }}" 
+                                        <a href="{{ route('link.redirect', ['shortCode' => $link['short_code']]) }}" 
                                            target="_blank"
                                            class="text-cyan-500 hover:text-cyan-400 transition-all duration-300 hover:scale-105 font-bold">
                                             {{ str_replace(config('app.url') . '/', '', $link['short_url']) }}
@@ -107,7 +107,7 @@
                                             📊
                                         </a>
                                         
-                                        <a href="{{ $link['short_url'] }}" 
+                                        <a href="{{ route('link.redirect', ['shortCode' => $link['short_code']]) }}" 
                                            target="_blank"
                                            class="inline-flex items-center gap-1 bg-gradient-to-r from-cyan-500/20 to-green-500/20 hover:from-cyan-500/30 hover:to-green-500/30 text-cyan-500 hover:text-cyan-400 transition-all duration-300 hover:scale-105 rounded px-2 py-1 text-xs font-medium border border-cyan-500/30"
                                            title="Visit Link">
@@ -137,7 +137,7 @@
                                                 <div class="text-center">
                                                     <div class="text-xs font-medium text-foreground mb-2">QR Code</div>
                                                     <div class="bg-white p-1 rounded border">
-                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode($link['short_url']) }}" 
+                                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={{ urlencode(route('link.redirect', ['shortCode' => $link['short_code']])) }}" 
                                                              alt="QR Code" 
                                                              class="w-20 h-20 mx-auto">
                                                     </div>
