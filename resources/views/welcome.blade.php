@@ -37,7 +37,7 @@
             @foreach (['No Sign-up Required', 'Customizable Short URLs',  '100% Open Source (MIT)', 'Part of Palictix Ecosystem', 'Built-in Public Analytics', 'Developer Friendly'] as $feature)
                 <div
                     class="flex items-center gap-3 backdrop-blur-lg bg-card/40 border border-border/30 rounded-xl p-4 hover:bg-card/60 transition-all duration-300 hover:scale-105 group
-          shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_40px_rgba(147,51,234,0.2)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_12px_40px_rgba(147,51,234,0.3)]">
+          shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_40px_rgba(147,51,234,0.2)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_12px_40px_rgba(147,51,234,0.3)] dark:border-gray-700">
                     <div
                         class="w-8 h-8 rounded-full bg-gradient-to-r from-green-400 to-emerald-500 flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
                         {{-- <x-lucide-check class="w-4 h-4 text-white" /> --}}

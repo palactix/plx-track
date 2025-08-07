@@ -5,7 +5,7 @@
     @include('partials.head')
 </head>
 
-<body class="">
+<body class="min-h-screen bg-white dark:bg-zinc-800">
 
     <div class="min-h-screen bg-background relative overflow-hidden">
         {{-- Colorful animated background elements --}}

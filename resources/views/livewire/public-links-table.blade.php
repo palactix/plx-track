@@ -15,7 +15,7 @@
     <div class="space-y-3">
         @if($links && count($links) > 0)
             @foreach ($links as $link)
-                <div class="backdrop-blur-xl bg-card/60 border border-border/30 rounded-lg p-4 transition-all duration-500 hover:bg-card/80 hover:scale-[1.01] hover:border-purple-500/30 shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] group"
+                <div class="backdrop-blur-xl bg-card/60 border border-border/30 rounded-lg p-4 transition-all duration-500 hover:bg-card/80 hover:scale-[1.01] hover:border-purple-500/30 shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.2)] group dark:border-gray-700"
                      wire:key="link-card-{{ $link['id'] }}">
                     
                     {{-- Main Content Row --}}

@@ -125,7 +125,7 @@
 
             {{-- Advanced Options --}}
             @if($this->canShowAdvancedOptions)
-                <div class="space-y-4 p-4 bg-background/30 rounded-lg border border-border/30">
+                <div class="space-y-4 p-4 bg-background/30 rounded-lg border border-border/30 dark:border-gray-700">
                     <h4 class="text-sm font-medium text-foreground">Advanced Options</h4>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,7 +136,7 @@
                                 type="text" 
                                 wire:model="customAlias" 
                                 placeholder="e.g., my-custom-link"
-                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors"
+                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors dark:border-gray-700"
                             >
                             @error('customAlias') 
                                 <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
@@ -150,7 +150,7 @@
                                 type="password" 
                                 wire:model="password" 
                                 placeholder="Enter password"
-                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors"
+                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors dark:border-gray-700"
                             >
                             @error('password') 
                                 <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
@@ -167,7 +167,7 @@
                                 type="text" 
                                 wire:model="title" 
                                 placeholder="Give your link a title (or leave empty for auto-detection)"
-                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors"
+                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors dark:border-gray-700"
                             >
                             @error('title') 
                                 <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
@@ -180,7 +180,7 @@
                             <input 
                                 type="datetime-local" 
                                 wire:model="expiresAt" 
-                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors"
+                                class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors dark:border-gray-700"
                                 min="{{ now()->format('Y-m-d\TH:i') }}"
                             >
                             @error('expiresAt') 
@@ -199,7 +199,7 @@
                             wire:model="description" 
                             placeholder="Add a description for your link (or leave empty for auto-detection)"
                             rows="2"
-                            class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors resize-none"
+                            class="w-full bg-background/60 border border-border/30 rounded px-3 py-2 text-foreground focus:border-purple-500/40 transition-colors resize-none dark:border-gray-700"
                         ></textarea>
                         @error('description') 
                             <span class="text-red-500 text-sm mt-1 block">{{ $message }}</span> 
