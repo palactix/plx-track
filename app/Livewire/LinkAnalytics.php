@@ -22,7 +22,6 @@ class LinkAnalytics extends Component
     {
         $this->shortCode = $shortCode;
         $this->loadLink();
-        $this->calculateStatistics();
     }
 
     protected function loadLink()
@@ -32,16 +31,6 @@ class LinkAnalytics extends Component
                          ->firstOrFail();
     }
 
-    protected function calculateStatistics()
-    {
-        // Get total clicks
-        $this->totalClicks = $this->link->clicks()->count();
-        
-        // Get last 7 days clicks
-        $this->last7DaysClicks = $this->link->clicks()
-            ->where('clicked_at', '>=', now()->subDays(7))
-            ->count();
-    }
 
     public function getRecentClicksProperty()
     {
@@ -86,7 +75,6 @@ class LinkAnalytics extends Component
 
     public function refreshAnalytics()
     {
-        $this->calculateStatistics();
         $this->currentPage = 1; // Reset to first page
         $this->hasMoreClicks = true; // Reset load more state
         $this->dispatch('analytics-refreshed');
