@@ -7,6 +7,8 @@ use App\Models\Click;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
+require __DIR__.'/auth.php';
+
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -31,5 +33,3 @@ Route::post('/{shortCode}/verify-password', [RedirectController::class, 'verifyP
 
 // Short link redirection route (must be last to catch all remaining routes)
 Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', '[a-zA-Z0-9-_]+')->name('link.redirect');
-
-require __DIR__.'/auth.php';
