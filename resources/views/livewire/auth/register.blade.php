@@ -31,7 +31,8 @@ new #[Layout('components.layouts.auth')] class extends Component {
 
         Auth::login($user);
 
-        $this->redirectIntended(route('dashboard', absolute: false));
+        // Redirect to email verification page since email verification is now required
+        $this->redirectRoute('verification.notice');
     }
 }; ?>
 <div class="w-full max-w-md mx-auto ">
