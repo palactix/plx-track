@@ -5,21 +5,18 @@ namespace App\Livewire;
 use App\Models\Link;
 use App\Models\Click;
 use Livewire\Component;
-use Livewire\WithPagination;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class LinkAnalytics extends Component
 {
-    use WithPagination;
-
     public Link $link;
     public string $shortCode;
-    public array $dailyClicks = [];
     public int $totalClicks = 0;
     public int $last7DaysClicks = 0;
-    
-    protected $paginationTheme = 'tailwind';
+    public int $clicksPerLoad = 10;
+    public int $currentPage = 1;
+    public bool $hasMoreClicks = true;
 
     public function mount(string $shortCode)
     {
@@ -44,27 +41,14 @@ class LinkAnalytics extends Component
         $this->last7DaysClicks = $this->link->clicks()
             ->where('clicked_at', '>=', now()->subDays(7))
             ->count();
-        
-        // Calculate daily clicks for chart
-        $this->dailyClicks = [];
-        for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i);
-            $clickCount = $this->link->clicks()
-                ->whereDate('clicked_at', $date)
-                ->count();
-            
-            $this->dailyClicks[] = [
-                'date' => $date,
-                'count' => $clickCount,
-                'day' => $date->format('M j')
-            ];
-        }
     }
 
     public function getRecentClicksProperty()
     {
-        // For public analytics, limit to essential data and paginate
-        return $this->link->clicks()
+        // Get clicks with infinite loading approach
+        $totalItems = $this->clicksPerLoad * $this->currentPage;
+        
+        $clicks = $this->link->clicks()
             ->where('clicked_at', '>=', now()->subDays(7))
             ->select([
                 'id',
@@ -74,13 +58,25 @@ class LinkAnalytics extends Component
                 'referrer'
             ])
             ->orderBy('clicked_at', 'desc')
-            ->paginate(10); // Limit to 10 per page for performance
+            ->take($totalItems)
+            ->get();
+
+        // Check if there are more clicks to load
+        $totalClicks = $this->link->clicks()
+            ->where('clicked_at', '>=', now()->subDays(7))
+            ->count();
+            
+        $this->hasMoreClicks = $clicks->count() < $totalClicks;
+
+        return $clicks;
     }
 
-    public function getMaxClicksProperty(): int
+    public function loadMoreClicks()
     {
-        return max(array_column($this->dailyClicks, 'count')) ?: 1;
+        $this->currentPage++;
+        // The property will automatically reload with more data
     }
+
 
     public function copyShortUrl()
     {
@@ -91,7 +87,8 @@ class LinkAnalytics extends Component
     public function refreshAnalytics()
     {
         $this->calculateStatistics();
-        $this->resetPage(); // Reset pagination
+        $this->currentPage = 1; // Reset to first page
+        $this->hasMoreClicks = true; // Reset load more state
         $this->dispatch('analytics-refreshed');
     }
 
@@ -119,9 +116,15 @@ class LinkAnalytics extends Component
 
     public function render()
     {
+        $recentClicks = $this->recentClicks;
+        $totalClicksInPeriod = $this->link->clicks()
+            ->where('clicked_at', '>=', now()->subDays(7))
+            ->count();
+            
         return view('livewire.link-analytics', [
-            'recentClicks' => $this->recentClicks,
-            'maxClicks' => $this->maxClicks
+            'recentClicks' => $recentClicks,
+            'totalClicksInPeriod' => $totalClicksInPeriod,
+            'hasMoreClicks' => $this->hasMoreClicks
         ]);
     }
 }
