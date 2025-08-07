@@ -133,12 +133,39 @@
             
             {{-- Chart Container --}}
             <div class="relative h-64">
+                {{-- Chart Loading Indicator --}}
+                <div id="chartLoading" class="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-lg">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="text-purple-500 font-medium">Loading chart...</span>
+                    </div>
+                </div>
                 <canvas id="clicksChart" class="w-full h-full"></canvas>
             </div>
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
+            function initializeChart() {
+                // Check if Chart.js is loaded
+                if (typeof Chart === 'undefined') {
+                    console.warn('Chart.js not loaded yet, retrying...');
+                    setTimeout(initializeChart, 100);
+                    return;
+                }
+
+                // Check if canvas exists
+                const canvas = document.getElementById('clicksChart');
+                if (!canvas) {
+                    console.warn('Chart canvas not found, retrying...');
+                    setTimeout(initializeChart, 100);
+                    return;
+                }
+
+                // Destroy existing chart if it exists
+                if (window.analyticsChart && typeof window.analyticsChart.destroy === 'function') {
+                    window.analyticsChart.destroy();
+                }
+
                 // Detect dark mode
                 const isDarkMode = document.documentElement.classList.contains('dark') || 
                                  window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -279,12 +306,20 @@
                 };
 
                 // Create chart
-                const ctx = document.getElementById('clicksChart').getContext('2d');
-                let chart = new Chart(ctx, config);
+                const ctx = canvas.getContext('2d');
+                window.analyticsChart = new Chart(ctx, config);
+
+                // Hide loading indicator
+                const loadingIndicator = document.getElementById('chartLoading');
+                if (loadingIndicator) {
+                    loadingIndicator.style.display = 'none';
+                }
 
                 // Global function to update chart type
                 window.updateChart = function(type) {
-                    chart.destroy(); // Destroy existing chart
+                    if (!window.analyticsChart) return;
+                    
+                    window.analyticsChart.destroy(); // Destroy existing chart
                     
                     // Update dataset based on type
                     switch(type) {
@@ -333,20 +368,36 @@
                     }
                     
                     // Recreate chart with new config
-                    chart = new Chart(ctx, config);
+                    window.analyticsChart = new Chart(ctx, config);
                 };
+            }
 
-                // Handle Livewire events
-                document.addEventListener('livewire:init', function() {
-                    Livewire.on('analytics-refreshed', function() {
-                        // Refresh chart data
-                        setTimeout(() => {
-                            chart.destroy();
-                            location.reload();
-                        }, 300);
-                    });
+            // Initialize chart on different events
+            // Handle Livewire events - This is the main initialization
+            document.addEventListener('livewire:init', function() {
+                // Initialize chart when Livewire is ready
+                initializeChart();
+                
+                // Listen for analytics refresh events
+                Livewire.on('analytics-refreshed', function() {
+                    // Refresh chart data by reinitializing
+                    setTimeout(initializeChart, 300);
                 });
             });
+
+            // Also handle livewire:navigated for wire:navigate
+            document.addEventListener('livewire:navigated', function() {
+                setTimeout(initializeChart, 100);
+            });
+            
+            // Fallback for direct page loads (when Livewire isn't involved)
+            if (document.readyState === 'complete') {
+                setTimeout(initializeChart, 100);
+            } else {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(initializeChart, 100);
+                });
+            }
         </script>
     </div>
 
