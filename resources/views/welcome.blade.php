@@ -2,38 +2,39 @@
 
 @section('content')
     {{-- Hero Section --}}
-    <div class="text-center mb-16">
-        <div
-            class="inline-block p-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full mb-6 backdrop-blur-sm border border-purple-500/20 shadow-xl">
-            <div class="bg-background/90 rounded-full px-6 py-2 backdrop-blur-md">
-                <span class="bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-                    ✨ Open Source & Free Forever
-                </span>
+    <div class="mb-16">
+        <div class="text-center mb-16">
+            <div
+                class="inline-block p-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full mb-6 backdrop-blur-sm border border-purple-500/20 shadow-xl">
+                <div class="bg-background/90 rounded-full px-6 py-2 backdrop-blur-md">
+                    <span class="bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
+                        ✨ Open Source & Free Forever
+                    </span>
+                </div>
             </div>
+        
+
+            <h1 class="text-5xl font-bold text-foreground mb-4 leading-tight">
+                Open Source Link Shortener
+                <br />
+                <a href="https://palactix.com" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
+                    by Palactix
+                </a>
+            </h1>
+        
+            <p class="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
+                Create, Share, and Track Short links - Free & Open for All
+            </p>
         </div>
-
-        <h1 class="text-5xl font-bold text-foreground mb-4 leading-tight">
-            Open Source Link Shortener
-            <br />
-            <a href="https://palactix.com" class="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500">
-                by Palactix
-            </a>
-        </h1>
-
-        <p class="text-xl text-muted-foreground mb-12 max-w-2xl mx-auto">
-            Create, Share, and Track Short links - Free & Open for All
-        </p>
 
         {{-- URL Input Section --}}
-        <div
-            class="backdrop-blur-xl bg-card/60 border-purple-500/20 p-8 mb-12 transition-all duration-500 hover:bg-card/70 hover:border-purple-500/30
-        shadow-[0_20px_60px_rgba(147,51,234,0.15)] dark:shadow-[0_20px_60px_rgba(147,51,234,0.2)]">
+        <x-public.card>
             <livewire:link-generator />
-        </div>
+        </x-public.card>
 
         {{-- Features --}}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-16">
-            @foreach (['No Sign-up Required', '100% Open Source (MIT)', 'Part of Palictix Ecosystem', 'Built-in Public Analytics', 'Developer Friendly'] as $feature)
+            @foreach (['No Sign-up Required', 'Customizable Short URLs',  '100% Open Source (MIT)', 'Part of Palictix Ecosystem', 'Built-in Public Analytics', 'Developer Friendly'] as $feature)
                 <div
                     class="flex items-center gap-3 backdrop-blur-lg bg-card/40 border border-border/30 rounded-xl p-4 hover:bg-card/60 transition-all duration-300 hover:scale-105 group
           shadow-[0_8px_32px_rgba(0,0,0,0.1)] hover:shadow-[0_12px_40px_rgba(147,51,234,0.2)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_12px_40px_rgba(147,51,234,0.3)]">

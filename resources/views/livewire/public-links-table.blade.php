@@ -47,7 +47,7 @@
                                         <button type="button"
                                                 x-data="{}"
                                                 x-on:click="
-                                                    navigator.clipboard.writeText('{{ $link['short_url'] }}');
+                                                    navigator.clipboard.writeText('{{ route('link.redirect', ['shortCode' => $link['short_code']]) }}');
                                                     $el.innerHTML = '✓';
                                                     $el.classList.add('bg-green-500', 'text-white');
                                                     setTimeout(() => {

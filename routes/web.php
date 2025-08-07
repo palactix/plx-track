@@ -26,8 +26,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // Short link routes (must be near the end to catch remaining routes)
-// Route::get('/{shortCode}/preview', [RedirectController::class, 'preview'])->name('link.preview')->where('shortCode', '[a-zA-Z0-9-_]+');
-// Route::post('/{shortCode}/verify-password', [RedirectController::class, 'verifyPassword'])->name('link.verify-password')->where('shortCode', '[a-zA-Z0-9-_]+');
+Route::get('/{shortCode}/preview', [RedirectController::class, 'preview'])->name('link.preview')->where('shortCode', '[a-zA-Z0-9-_]+');
+Route::post('/{shortCode}/verify-password', [RedirectController::class, 'verifyPassword'])->name('link.verify-password')->where('shortCode', '[a-zA-Z0-9-_]+');
 
 // Short link redirection route (must be last to catch all remaining routes)
 Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', '[a-zA-Z0-9-_]+')->name('link.redirect');

@@ -28,8 +28,8 @@ class RedirectController extends Controller
                    ->orWhere('custom_alias', $code)
                    ->first();
 
-         
         if (!$link) {
+            
             abort(404, 'Short link not found');
         }
 
