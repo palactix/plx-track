@@ -10,6 +10,7 @@
             <a href="{{ route('dashboard') }}" class="me-5 flex items-center space-x-2 rtl:space-x-reverse" wire:navigate>
                 <x-app-logo />
             </a>
+            <flux:button x-data x-on:click="$flux.dark = ! $flux.dark">Toggle</flux:button>
 
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">

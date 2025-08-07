@@ -5,7 +5,7 @@
     @include('partials.head')
 </head>
 
-<body class="">
+<body class="min-h-screen bg-white dark:bg-zinc-800">
 
     <div class="min-h-screen bg-background relative overflow-hidden">
         {{-- Colorful animated background elements --}}
@@ -48,7 +48,6 @@
 		
 		<main class="relative z-10 max-w-4xl mx-auto px-6 py-16">
         	@yield('content')
-            {{ $slot }}
 		</main>
         @include('partials.footer')
     </div>
