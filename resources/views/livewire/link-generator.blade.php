@@ -48,7 +48,7 @@
                             id="generated-url"
                         >
                         <button 
-                            onclick="copyToClipboard()"
+                            onclick="copyToClipboard(event)"
                             class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded transition-colors"
                         >
                             Copy
@@ -229,19 +229,42 @@
 </div>
 
 <script>
-    function copyToClipboard() {
+    function copyToClipboard(event) {
         const input = document.getElementById('generated-url');
-        input.select();
-        input.setSelectionRange(0, 99999); // For mobile devices
-        document.execCommand('copy');
-        
-        // Show feedback
+        const textToCopy = input.value;
         const button = event.target;
         const originalText = button.textContent;
-        button.textContent = 'Copied!';
-        button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
-        button.classList.remove('bg-purple-500', 'hover:bg-purple-600');
-        
+
+        // Use modern Clipboard API
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            // Show feedback
+            
+            button.textContent = 'Copied!';
+            button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+            button.classList.remove('bg-purple-500', 'hover:bg-purple-600');
+            
+            
+        }).catch(err => {
+            // Fallback for older browsers or HTTPS issues
+            console.error('Failed to copy text: ', err);
+            
+            // Fallback to select + execCommand for older browsers
+            input.select();
+            input.setSelectionRange(0, 99999);
+            try {
+                document.execCommand('copy');
+                // Show feedback for fallback too
+                const button = event.target;
+                button.textContent = 'Copied!';
+                button.classList.add('bg-emerald-500', 'hover:bg-emerald-600');
+                button.classList.remove('bg-purple-500', 'hover:bg-purple-600');
+                
+            } catch (fallbackErr) {
+                console.error('Fallback copy failed: ', fallbackErr);
+                alert('Copy failed. Please copy the URL manually.');
+            }
+        });
+
         setTimeout(() => {
             button.textContent = originalText;
             button.classList.remove('bg-emerald-500', 'hover:bg-emerald-600');

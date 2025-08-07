@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\RedirectController;
-use App\Models\Link;
-use App\Models\Click;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
 
