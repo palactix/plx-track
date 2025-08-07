@@ -59,28 +59,28 @@
         {{-- Chart Container --}}
         <div class="relative h-64">
             {{-- Chart loading indicator (controlled entirely by JS) --}}
-            <div id="chartLoading-" 
+            <div id="chartLoading" 
                  class="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-purple-500/5 to-cyan-500/5 rounded-lg z-10">
                 <div class="flex items-center gap-3">
                     <div class="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
                     <span class="text-purple-500 font-medium">Loading chart...</span>
                 </div>
             </div>
-            <canvas id="clicksChart-" class="w-full h-full"></canvas>
+            <canvas id="clicksChart" class="w-full h-full"></canvas>
         </div>
     </div>
 
     <script>
         // Make functions unique to this component instance
         window.showChartLoading = function() {
-            const loadingIndicator = document.getElementById('chartLoading-');
+            const loadingIndicator = document.getElementById('chartLoading');
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'flex';
             }
         };
 
         window.hideChartLoading = function() {
-            const loadingIndicator = document.getElementById('chartLoading-');
+            const loadingIndicator = document.getElementById('chartLoading');
             if (loadingIndicator) {
                 loadingIndicator.style.display = 'none';
             }
@@ -95,7 +95,7 @@
             }
 
             // Check if canvas exists
-            const canvas = document.getElementById('clicksChart-');
+            const canvas = document.getElementById('clicksChart');
             if (!canvas) {
                 console.warn('Chart canvas not found, retrying...');
                 setTimeout(initializeChart, 100);

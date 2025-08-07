@@ -24,13 +24,13 @@
                 {{-- <x-lucide-moon class="w-4 h-4 dark:hidden" /> --}}
                 {{-- <x-lucide-sun class="w-4 h-4 hidden dark:inline" /> --}}
             </button>
-            <button type="button"
+            <a 
                 wire:navigate href="{{ route('login') }}"
                 class="backdrop-blur-sm bg-background/50 border-purple-500/30 hover:bg-purple-500/10 transition-all duration-300 hover:scale-105
           shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.3)] border outline-none px-4 py-2 rounded-md flex items-center">
                 {{-- <x-lucide-user class="w-4 h-4 mr-2" /> --}}
                 Login
-            </button>
+            </a>
         </nav>
     </div>
 </header>
