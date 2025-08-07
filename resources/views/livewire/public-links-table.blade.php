@@ -43,18 +43,28 @@
                                 </div>
                             </td>
                             <td class="py-4 text-muted-foreground group-hover:text-foreground/70 transition-colors duration-300">
-                                <div class="space-y-1">
-                                    <div class="max-w-xs truncate font-medium" title="{{ $link['original_url'] }}">
-                                        {{ $link['original_url'] }}
-                                    </div>
-                                    <div class="text-xs text-muted-foreground/60">
-                                        🌐 {{ parse_url($link['original_url'], PHP_URL_HOST) }}
-                                    </div>
-                                    @if($link['has_description'])
-                                        <div class="text-xs text-muted-foreground/80 mt-1 max-w-xs truncate" title="{{ $link['description'] }}">
-                                            💬 {{ $link['description'] }}
+                                <div class="flex items-start gap-3">
+                                    @if($link['image'])
+                                        <div class="flex-shrink-0">
+                                            <img src="{{ $link['image'] }}" 
+                                                 alt="{{ $link['title'] ?: 'Preview' }}"
+                                                 class="w-10 h-10 object-cover rounded-md border border-border/30 shadow-sm"
+                                                 onerror="this.style.display='none';">
                                         </div>
                                     @endif
+                                    <div class="space-y-1 min-w-0 flex-1">
+                                        <div class="max-w-xs truncate font-medium" title="{{ $link['original_url'] }}">
+                                            {{ $link['original_url'] }}
+                                        </div>
+                                        <div class="text-xs text-muted-foreground/60">
+                                            🌐 {{ parse_url($link['original_url'], PHP_URL_HOST) }}
+                                        </div>
+                                        @if($link['has_description'])
+                                            <div class="text-xs text-muted-foreground/80 mt-1 max-w-xs truncate" title="{{ $link['description'] }}">
+                                                💬 {{ $link['description'] }}
+                                            </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </td>
                             <td class="py-4 text-center text-foreground group-hover:text-foreground/90 transition-colors duration-300">
@@ -74,7 +84,7 @@
                                 </div>
                             </td>
                             <td class="py-4 text-right">
-                                <a href="{{ route('analytics', $link['short_code']) }}" 
+                                <a wire:navigate href="{{ route('analytics', $link['short_code']) }}" 
                                    class="inline-flex items-center gap-2 text-purple-500 hover:text-purple-400 hover:bg-purple-500/10 transition-all duration-300 hover:scale-105 rounded-md px-3 py-1 text-sm font-medium">
                                     📊 Analytics
                                 </a>

@@ -10,6 +10,33 @@
             </div>
             
             <div class="space-y-4">
+                {{-- Link Preview with Metadata --}}
+                @if($generatedLink->title || $generatedLink->description || $generatedLink->image)
+                    <div class="bg-background/30 border border-border/20 rounded-lg p-4">
+                        <div class="flex items-start gap-4">
+                            @if($generatedLink->image)
+                                <div class="flex-shrink-0">
+                                    <img src="{{ $generatedLink->image }}" 
+                                         alt="{{ $generatedLink->title ?: 'Preview' }}"
+                                         class="w-16 h-16 object-cover rounded-lg border border-border/30 shadow-lg"
+                                         onerror="this.style.display='none';">
+                                </div>
+                            @endif
+                            <div class="flex-1 min-w-0">
+                                @if($generatedLink->title)
+                                    <div class="font-medium text-foreground mb-1">{{ $generatedLink->title }}</div>
+                                @endif
+                                @if($generatedLink->description)
+                                    <div class="text-sm text-muted-foreground mb-2">{{ $generatedLink->description }}</div>
+                                @endif
+                                <div class="text-xs text-muted-foreground/60">
+                                    🌐 {{ parse_url($generatedLink->original_url, PHP_URL_HOST) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                
                 <div>
                     <label class="text-sm text-muted-foreground">Your Short URL:</label>
                     <div class="flex gap-2 mt-1">
@@ -39,7 +66,7 @@
                     
                     @if($this->isPublicMode)
                         <a 
-                            href="#" 
+                            href="{{ route('analytics', $generatedLink->short_code) }}" 
                             class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-2 rounded transition-colors"
                         >
                             View Analytics

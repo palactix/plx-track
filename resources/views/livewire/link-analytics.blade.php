@@ -52,15 +52,27 @@
         <div class="backdrop-blur-xl bg-card/60 border-blue-500/20 p-6 transition-all duration-500 hover:bg-card/70 hover:scale-[1.02] hover:border-blue-500/30 shadow-[0_20px_60px_rgba(59,130,246,0.15)] dark:shadow-[0_20px_60px_rgba(59,130,246,0.2)]">
             <h2 class="text-xl font-bold text-foreground mb-4">Original URL:</h2>
             <div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-lg p-4 mb-4 border border-blue-500/20 backdrop-blur-sm shadow-[inset_0_4px_8px_rgba(0,0,0,0.1)] dark:shadow-[inset_0_4px_8px_rgba(0,0,0,0.2)]">
-                <div class="flex items-center gap-2">
-                    <span class="text-muted-foreground text-sm break-all">{{ $link->original_url }}</span>
+                <div class="flex items-start gap-4">
+                    @if($link->image)
+                        <div class="flex-shrink-0">
+                            <img src="{{ $link->image }}" 
+                                 alt="{{ $link->title ?: 'Preview' }}"
+                                 class="w-16 h-16 object-cover rounded-lg border border-blue-500/30 shadow-lg"
+                                 onerror="this.style.display='none';">
+                        </div>
+                    @endif
+                    <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-muted-foreground text-sm break-all">{{ $link->original_url }}</span>
+                        </div>
+                        @if($link->title)
+                            <div class="text-blue-400 font-medium mb-1">{{ $link->title }}</div>
+                        @endif
+                        @if($link->description)
+                            <div class="text-muted-foreground text-sm">{{ $link->description }}</div>
+                        @endif
+                    </div>
                 </div>
-                @if($link->title)
-                    <div class="mt-2 text-blue-400 font-medium">{{ $link->title }}</div>
-                @endif
-                @if($link->description)
-                    <div class="mt-1 text-muted-foreground text-sm">{{ $link->description }}</div>
-                @endif
             </div>
             
         </div>

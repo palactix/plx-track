@@ -85,10 +85,13 @@ class MetadataFetcher
             $this->getMetaContent($xpath, "meta[@name='description']") ??
             null;
         
-        // Extract image (priority: og:image > twitter:image)
+        // Extract image (priority: og:image > twitter:image > apple-touch-icon > favicon)
         $metadata['image'] = 
             $this->getMetaContent($xpath, "meta[@property='og:image']") ??
             $this->getMetaContent($xpath, "meta[@name='twitter:image']") ??
+            $this->getMetaContent($xpath, "meta[@name='twitter:image:src']") ??
+            $this->getLinkHref($xpath, "link[@rel='apple-touch-icon']") ??
+            $this->getLinkHref($xpath, "link[@rel='icon']") ??
             null;
         
         // Extract site name
@@ -113,6 +116,19 @@ class MetadataFetcher
             if ($node instanceof \DOMElement) {
                 $content = $node->getAttribute('content');
                 return trim($content) ?: null;
+            }
+        }
+        return null;
+    }
+    
+    protected function getLinkHref(\DOMXPath $xpath, string $query): ?string
+    {
+        $nodes = $xpath->query("//{$query}");
+        if ($nodes && $nodes->length > 0) {
+            $node = $nodes->item(0);
+            if ($node instanceof \DOMElement) {
+                $href = $node->getAttribute('href');
+                return trim($href) ?: null;
             }
         }
         return null;

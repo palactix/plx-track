@@ -65,6 +65,7 @@ class LinkGenerator extends Component
             'original_url' => $this->longUrl,
             'title' => $this->title ?: $metadata['title'],
             'description' => $this->description ?: $metadata['description'],
+            'image' => $metadata['image'],
             'password' => $this->password ? bcrypt($this->password) : null,
             'expires_at' => $this->expiresAt ? $this->expiresAt : null,
             'is_active' => true,
@@ -93,26 +94,38 @@ class LinkGenerator extends Component
     
     protected function getMetadataForLink(): array
     {
-        // If user has provided both title and description, don't fetch metadata
-        if ($this->title && $this->description) {
-            return ['title' => null, 'description' => null];
-        }
-        
+        // If user has provided title and description, still fetch image
         try {
             $this->fetchingMetadata = true;
             
             $metadataFetcher = new MetadataFetcher();
-            $metadata = $metadataFetcher->getTitleAndDescription($this->longUrl);
+            $metadata = $metadataFetcher->fetch($this->longUrl);
             
-            return $metadata;
+            // If user provided title/description, use their input instead
+            if ($this->title) {
+                $metadata['title'] = $this->title;
+            }
+            if ($this->description) {
+                $metadata['description'] = $this->description;
+            }
+            
+            return [
+                'title' => $metadata['title'] ?? null,
+                'description' => $metadata['description'] ?? null,
+                'image' => $metadata['image'] ?? null
+            ];
             
         } catch (\Exception $e) {
-            // If metadata fetching fails, return empty metadata
+            // If metadata fetching fails, return user input or empty metadata
             Log::warning('Failed to fetch metadata for URL: ' . $this->longUrl, [
                 'error' => $e->getMessage()
             ]);
             
-            return ['title' => null, 'description' => null];
+            return [
+                'title' => $this->title ?? null, 
+                'description' => $this->description ?? null,
+                'image' => null
+            ];
         } finally {
             $this->fetchingMetadata = false;
         }

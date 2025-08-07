@@ -40,6 +40,7 @@ class PublicLinksTable extends Component
                     'original_url' => $link->original_url,
                     'title' => $link->title ?: $this->getDomainFromUrl($link->original_url),
                     'description' => $link->description,
+                    'image' => $link->image,
                     'clicks_last_7_days' => $this->getClicksLast7Days($link),
                     'total_clicks' => $link->clicks_count,
                     'created_at' => $link->created_at,

@@ -4,7 +4,7 @@
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         <div
             class="text-2xl font-bold text-foreground tracking-tight bg-gradient-to-r from-purple-500 to-cyan-500 bg-clip-text text-transparent">
-            plx.bz
+            <a wire:navigate href="{{  route('home') }}">plx.bz</a>
         </div>
         <nav class="flex items-center space-x-8">
             <a href="#"

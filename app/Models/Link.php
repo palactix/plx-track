@@ -18,6 +18,7 @@ class Link extends Model
         'claimed_at',
         'title',
         'description',
+        'image',
         'custom_alias',
         'password',
         'is_active',
