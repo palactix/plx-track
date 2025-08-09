@@ -6,20 +6,29 @@
             <p class="text-muted-foreground">Manage and monitor all your short links</p>
         </div>
         
-        {{-- Quick Stats --}}
-        <div class="grid grid-cols-3 gap-4 lg:gap-6">
-            <div class="text-center">
-                <div class="text-2xl font-bold text-purple-500">{{ number_format($totalLinks) }}</div>
-                <div class="text-xs text-muted-foreground">Total Links</div>
+        {{-- Quick Stats & Test Button --}}
+        <div class="flex items-center gap-4">
+            <div class="grid grid-cols-3 gap-4 lg:gap-6">
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-purple-500">{{ number_format($totalLinks) }}</div>
+                    <div class="text-xs text-muted-foreground">Total Links</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-500">{{ number_format($activeLinks) }}</div>
+                    <div class="text-xs text-muted-foreground">Active</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-cyan-500">{{ number_format($totalClicks) }}</div>
+                    <div class="text-xs text-muted-foreground">Total Clicks</div>
+                </div>
             </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-green-500">{{ number_format($activeLinks) }}</div>
-                <div class="text-xs text-muted-foreground">Active</div>
-            </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-cyan-500">{{ number_format($totalClicks) }}</div>
-                <div class="text-xs text-muted-foreground">Total Clicks</div>
-            </div>
+            
+            {{-- Test Notification Button --}}
+                                {{-- Test Notification Button --}}
+                    <button onclick="window.notify.success('Test notification - Success! This should work now.')" 
+                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors duration-200">
+                        Test Notification
+                    </button>
         </div>
     </div>
 
@@ -345,9 +354,18 @@
                                         </button>
 
                                         {{-- Delete Button --}}
-                                        <button wire:click="confirmDelete({{ $link->id }})" 
-                                                class="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 hover:text-red-600 transition-all duration-200 border border-red-500/20 hover:border-red-500/30" 
-                                                title="Delete Link">
+                                        <button 
+                                            x-data
+                                            @click="
+                                                $dispatch('open-modal', {
+                                                    title: 'Delete Link',
+                                                    message: 'Are you sure you want to delete this link? This action cannot be undone.',
+                                                    confirmText: 'Delete',
+                                                    confirmAction: () => $wire.call('deleteLink', {{ $link->id }})
+                                                })
+                                            "
+                                            class="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 hover:text-red-600 transition-all duration-200 border border-red-500/20 hover:border-red-500/30" 
+                                            title="Delete Link">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                             </svg>
@@ -419,33 +437,10 @@
         </div>
     @endif
 
-    {{-- Success Message --}}
-    @if (session()->has('message'))
-        <div class="fixed top-4 right-4 bg-green-500/20 border border-green-500/30 text-green-600 dark:text-green-400 px-4 py-3 rounded-lg z-50"
-             x-data="{ show: true }" 
-             x-show="show" 
-             x-transition 
-             x-init="setTimeout(() => show = false, 3000)">
-            {{ session('message') }}
-        </div>
-    @endif
+
 </div>
 
 <script>
-    // Copy to clipboard function
-    function copyLinkToClipboard(url, button) {
-        navigator.clipboard.writeText(url).then(() => {
-            const originalHtml = button.innerHTML;
-            button.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
-            button.classList.add('text-green-500');
-            
-            setTimeout(() => {
-                button.innerHTML = originalHtml;
-                button.classList.remove('text-green-500');
-            }, 2000);
-        }).catch(err => {
-            console.error('Failed to copy: ', err);
-            alert('Failed to copy link. Please try again.');
-        });
-    }
+    // This function is now replaced by the global one in head.blade.php
+    // But keeping it here for backward compatibility if needed
 </script>

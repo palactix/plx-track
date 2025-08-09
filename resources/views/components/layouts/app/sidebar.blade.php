@@ -129,6 +129,12 @@
 
         {{ $slot }}
 
+        {{-- Notification System --}}
+        <x-notifications />
+
+        {{-- Confirmation Modal --}}
+        <x-confirmation-modal />
+
         @fluxScripts
     </body>
 </html>

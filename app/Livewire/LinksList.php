@@ -111,7 +111,7 @@ class LinksList extends Component
         $link->update(['is_active' => !$link->is_active]);
         
         $status = $link->is_active ? 'activated' : 'deactivated';
-        session()->flash('message', "Link {$status} successfully!");
+        $this->dispatch('notify', ['message' => "Link {$status} successfully!", 'type' => 'success']);
     }
 
     public function confirmDelete($linkId)
@@ -120,18 +120,20 @@ class LinksList extends Component
         $this->showDeleteModal = true;
     }
 
-    public function deleteLink()
+    public function deleteLink($linkId = null)
     {
-        if ($this->linkToDelete) {
-            $link = Link::where('user_id', Auth::id())->findOrFail($this->linkToDelete);
+        $idToDelete = $linkId ?: $this->linkToDelete;
+        
+        if ($idToDelete) {
+            $link = Link::where('user_id', Auth::id())->findOrFail($idToDelete);
             $link->delete(); // Soft delete
             
-            session()->flash('message', 'Link deleted successfully!');
+            $this->dispatch('notify', ['message' => 'Link deleted successfully!', 'type' => 'success']);
             $this->showDeleteModal = false;
             $this->linkToDelete = null;
             
             // Remove from selected if it was selected
-            $this->selectedLinks = array_filter($this->selectedLinks, fn($id) => $id !== $this->linkToDelete);
+            $this->selectedLinks = array_filter($this->selectedLinks, fn($id) => $id !== $idToDelete);
         }
     }
 
@@ -148,7 +150,7 @@ class LinksList extends Component
             ->delete();
         
         $count = count($this->selectedLinks);
-        session()->flash('message', "{$count} links deleted successfully!");
+        $this->dispatch('notify', ['message' => "{$count} links deleted successfully!", 'type' => 'success']);
         
         $this->selectedLinks = [];
         $this->selectAll = false;
@@ -162,7 +164,7 @@ class LinksList extends Component
             ->update(['is_active' => true]);
         
         $count = count($this->selectedLinks);
-        session()->flash('message', "{$count} links activated successfully!");
+        $this->dispatch('notify', ['message' => "{$count} links activated successfully!", 'type' => 'success']);
         
         $this->selectedLinks = [];
         $this->selectAll = false;
@@ -176,7 +178,7 @@ class LinksList extends Component
             ->update(['is_active' => false]);
         
         $count = count($this->selectedLinks);
-        session()->flash('message', "{$count} links deactivated successfully!");
+        $this->dispatch('notify', ['message' => "{$count} links deactivated successfully!", 'type' => 'success']);
         
         $this->selectedLinks = [];
         $this->selectAll = false;
@@ -188,7 +190,7 @@ class LinksList extends Component
         $link = Link::withTrashed()->where('user_id', Auth::id())->findOrFail($linkId);
         $link->restore();
         
-        session()->flash('message', 'Link restored successfully!');
+        $this->dispatch('notify', ['message' => 'Link restored successfully!', 'type' => 'success']);
     }
 
     public function forceDeleteLink($linkId)
@@ -196,7 +198,7 @@ class LinksList extends Component
         $link = Link::withTrashed()->where('user_id', Auth::id())->findOrFail($linkId);
         $link->forceDelete();
         
-        session()->flash('message', 'Link permanently deleted!');
+        $this->dispatch('notify', ['message' => 'Link permanently deleted!', 'type' => 'warning']);
     }
 
     private function getLinks()
