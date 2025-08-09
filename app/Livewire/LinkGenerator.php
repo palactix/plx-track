@@ -85,10 +85,15 @@ class LinkGenerator extends Component
         // Reset form
         $this->resetForm();
         
-        // Dispatch success event
+        // Dispatch success events
         $this->dispatch('link-generated', [
             'shortUrl' => $this->getShortUrl($this->generatedLink),
             'mode' => $this->mode
+        ]);
+        
+        // Also dispatch for dashboard refresh
+        $this->dispatch('linkGenerated', [
+            'link' => $this->generatedLink
         ]);
     }
     
