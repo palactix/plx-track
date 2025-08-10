@@ -22,13 +22,6 @@
                     <div class="text-xs text-muted-foreground">Total Clicks</div>
                 </div>
             </div>
-            
-            {{-- Test Notification Button --}}
-                                {{-- Test Notification Button --}}
-                    <button onclick="window.notify.success('Test notification - Success! This should work now.')" 
-                            class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors duration-200">
-                        Test Notification
-                    </button>
         </div>
     </div>
 
@@ -321,13 +314,13 @@
                                         </button>
                                     @else
                                         {{-- Analytics Button --}}
-                                        <a href="{{ route('analytics', ['shortCode' => $link->short_code]) }}" 
-                                           class="p-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-500 hover:text-purple-600 transition-all duration-200 border border-purple-500/20 hover:border-purple-500/30" 
-                                           title="View Analytics">
+                                        <button wire:click="$dispatch('openAnalytics', { linkId: {{ $link->id }} })" 
+                                                class="p-2 rounded-lg bg-purple-500/10 hover:bg-purple-500/20 text-purple-500 hover:text-purple-600 transition-all duration-200 border border-purple-500/20 hover:border-purple-500/30" 
+                                                title="View Analytics">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                                             </svg>
-                                        </a>
+                                        </button>
 
                                         {{-- Copy Button --}}
                                         <button onclick="copyLinkToClipboard('{{ config('app.url') }}/{{ $link->short_code }}', this)" 

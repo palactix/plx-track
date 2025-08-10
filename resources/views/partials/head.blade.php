@@ -13,6 +13,9 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance
 
+{{-- Chart.js for analytics charts --}}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+
 {{-- Toast Notification Styles --}}
 <style>
 .toast-container {
