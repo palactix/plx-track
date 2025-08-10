@@ -9,12 +9,12 @@
         <nav class="flex items-center space-x-8">
             <a href="#"
                 class="text-muted-foreground hover:text-purple-500 transition-all duration-300 hover:scale-105">About</a>
-            <a href="#"
+            <a href="https://github.com/palactix/plx-track" target="_blank"
                 class="text-muted-foreground hover:text-purple-500 transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 {{-- <x-lucide-github class="w-4 h-4" /> --}}
                 GitHub
             </a>
-            <a href="#"
+            <a href="https://jitendra.dev/"
                 class="text-muted-foreground hover:text-purple-500 transition-all duration-300 hover:scale-105 flex items-center gap-2">
                 {{-- <x-lucide-file-text class="w-4 h-4" /> --}}
                 Docs
@@ -24,6 +24,14 @@
                 {{-- <x-lucide-moon class="w-4 h-4 dark:hidden" /> --}}
                 {{-- <x-lucide-sun class="w-4 h-4 hidden dark:inline" /> --}}
             </button>
+            @auth
+                <a 
+                    wire:navigate href="{{ route('dashboard') }}"
+                    class="backdrop-blur-sm bg-background/50 border-purple-500/30 hover:bg-purple-500/10 transition-all duration-300 hover:scale-105
+              shadow-[0_4px_16px_rgba(0,0,0,0.1)] dark:shadow-[0_4px_16px_rgba(0,0,0,0.3)] border outline-none px-4 py-2 rounded-md flex items-center">
+                    Dashboard
+                </a>
+            @else
             <a 
                 wire:navigate href="{{ route('login') }}"
                 class="backdrop-blur-sm bg-background/50 border-purple-500/30 hover:bg-purple-500/10 transition-all duration-300 hover:scale-105
@@ -31,6 +39,9 @@
                 {{-- <x-lucide-user class="w-4 h-4 mr-2" /> --}}
                 Login
             </a>
+            @endauth
+
+            
         </nav>
     </div>
 </header>

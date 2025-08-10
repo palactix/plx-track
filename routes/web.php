@@ -13,16 +13,21 @@ Route::get('/', function () {
 
 Route::get('/analytics/{shortCode}', [AnalyticsController::class, 'show'])->name('analytics');
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
-
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/password', 'settings.password')->name('settings.password');
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
+
+
+    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::view('links', 'links')->name('links.index');
+
+    Route::get('/links/analytics/{linkId}', function ($linkId) {
+        return view('links', compact('linkId'));
+    })->name('analytics.show');
+
 });
 
 // Short link routes (must be near the end to catch remaining routes)
