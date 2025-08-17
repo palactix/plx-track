@@ -2,7 +2,7 @@
 
 @section("head")
 <!-- Functional Meta for SEO -->
-<title>plx.bz — Free Open Source Link Shortener & Analytics</title>
+
 <meta name="description" content="Shorten, share, and analyze links instantly with plx.bz. Free and open-source forever. Public analytics, no signup required, part of the Palactix ecosystem.">
 
 <!-- Futuristic Meta for Social -->
