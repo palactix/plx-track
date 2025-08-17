@@ -1,5 +1,24 @@
 @extends('layouts.public')
 
+@section("head")
+<!-- Functional Meta for SEO -->
+<title>plx.bz — Free Open Source Link Shortener & Analytics</title>
+<meta name="description" content="Shorten, share, and analyze links instantly with plx.bz. Free and open-source forever. Public analytics, no signup required, part of the Palactix ecosystem.">
+
+<!-- Futuristic Meta for Social -->
+<meta property="og:title" content="plx.bz — The Future of Open Link Sharing">
+<meta property="og:description" content="Beyond shortening. plx.bz is open-source, transparent, and built for the web of tomorrow. Your links, your freedom.">
+<meta property="og:url" content="https://plx.bz">
+<meta property="og:type" content="website">
+<meta property="og:image" content="{{ asset('images/plx.bz-meta-image.png') }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="plx.bz — The Future of Open Link Sharing">
+<meta name="twitter:description" content="Beyond shortening. plx.bz is open-source, transparent, and built for the web of tomorrow. Your links, your freedom.">
+<meta name="twitter:image" content="{{ asset('images/plx.bz-meta-image.png') }}">
+
+
+@endsection
 @section('content')
     {{-- Hero Section --}}
     <div class="mb-16">
@@ -8,7 +27,7 @@
                 class="inline-block p-1 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-full mb-6 backdrop-blur-sm border border-purple-500/20 shadow-xl">
                 <div class="bg-background/90 rounded-full px-6 py-2 backdrop-blur-md">
                     <span class="bg-clip-text bg-gradient-to-r from-purple-500 to-cyan-500">
-                        ✨ Open Source & Free Forever
+                        ✨ Shorten. Share. Track
                     </span>
                 </div>
             </div>
