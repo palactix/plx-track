@@ -24,4 +24,4 @@ yarn-error.log
 
 
 deploy.sh
-deploy-webhook.php
+public/deploy-webhook.php
