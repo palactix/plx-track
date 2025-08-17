@@ -13,6 +13,8 @@
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 @fluxAppearance
 
+@yield('head')
+
 {{-- Chart.js for analytics charts --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
@@ -258,5 +260,3 @@ document.addEventListener('livewire:initialized', () => {
         border-left: 4px solid #3b82f6;
     }
 </style>
-
-@yield('head')
