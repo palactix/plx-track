@@ -17,9 +17,8 @@ class DeployWebhookController extends Controller
             return response()->json(['error' => 'Invalid signature'], 403);
         }
 
-         $data = $request->json()->all();
-         Log::info("Received GitHub webhook payload: " . json_encode($data));
-
+        $data = json_decode($request->input('payload'), true);
+        
         // Only run if pushed branch is "main"
         if (($data['ref'] ?? '') !== 'refs/heads/main') {
             Log::info("Push to non-main branch ignored: " . ($data['ref'] ?? 'unknown'));
