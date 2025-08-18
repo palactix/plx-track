@@ -9,7 +9,7 @@ use Livewire\Volt\Volt;
 require __DIR__.'/auth.php';
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', ["title" => "plx.bz — Free Open Source Link Shortener & Analytics"]);
 })->name('home');
 
 Route::post('/deploy-webhook', [DeployWebhookController::class, 'handle']);
