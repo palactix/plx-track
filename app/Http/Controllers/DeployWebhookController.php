@@ -18,6 +18,7 @@ class DeployWebhookController extends Controller
         }
 
          $data = $request->json()->all();
+         Log::info("Received GitHub webhook payload: " . json_encode($data));
 
         // Only run if pushed branch is "main"
         if (($data['ref'] ?? '') !== 'refs/heads/main') {
