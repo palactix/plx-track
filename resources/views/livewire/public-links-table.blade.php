@@ -178,7 +178,7 @@
                 </div>
                 <h3 class="text-xl font-bold text-foreground mb-3">No public links yet</h3>
                 <p class="text-muted-foreground max-w-md mx-auto">
-                    Be the first to create a public short link! Your generated links will appear here as beautiful cards.
+                    Be the first to create a public short link!
                 </p>
                 <div class="mt-6">
                     <div class="inline-flex items-center gap-2 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-lg px-4 py-2 border border-purple-500/30">
