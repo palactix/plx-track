@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class DeployCommand extends Command
 {
@@ -46,6 +47,7 @@ class DeployCommand extends Command
     private function runCmd($command)
     {
         $this->info("➡️  $command");
+        Log::info("Running command: $command");
         $output = shell_exec($command . ' 2>&1');
         $this->line($output);
     }

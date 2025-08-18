@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class DeployWebhookController extends Controller
 {
@@ -16,6 +17,13 @@ class DeployWebhookController extends Controller
             return response()->json(['error' => 'Invalid signature'], 403);
         }
 
+         $data = $request->json()->all();
+
+        // Only run if pushed branch is "main"
+        if (($data['ref'] ?? '') !== 'refs/heads/main') {
+            Log::info("Push to non-main branch ignored: " . ($data['ref'] ?? 'unknown'));
+            return response('Ignored branch', 200);
+        }
         // Run deployment
         Artisan::call('deploy:run');
 
