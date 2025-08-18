@@ -20,6 +20,21 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
 
 {{-- Toast Notification Styles --}}
+
+@if(env('APP_ENV') === 'production')
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FR7EN7LCR8"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FR7EN7LCR8');
+    </script>
+        
+@endif
+
 <style>
 .toast-container {
     position: fixed;
