@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\AnalyticsController;
-use App\Http\Controllers\DeployWebhookController;
 use App\Http\Controllers\RedirectController;
 use Illuminate\Support\Facades\Route;
 use Livewire\Volt\Volt;
@@ -12,7 +11,6 @@ Route::get('/', function () {
     return view('welcome', ["title" => "plx.bz — Free Open Source Link Shortener & Analytics"]);
 })->name('home');
 
-Route::post('/deploy-webhook', [DeployWebhookController::class, 'handle']);
 
 Route::get('/analytics/{shortCode}', [AnalyticsController::class, 'show'])->name('analytics');
 
