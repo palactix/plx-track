@@ -51,7 +51,8 @@
 		</main>
         @include('partials.footer')
     </div>
-
+    <script src="{{ asset('vendor/livewire/livewire.min.js') }}"></script>
+    @livewireScripts
 </body>
 
 </html>
