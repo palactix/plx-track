@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from '@inertiajs/react';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -9,10 +10,8 @@ export const Header = () => {
     <header className="border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold text-primary">
-                plx.bz
-              </span>
+            <div className="flex  h-10 w-25 items-center justify-center">
+               <a href='/'><img src='/logo/plx-track-logo.svg' alt='App Logo' /></a>
             </div>
 
             {/* Desktop Navigation */}
@@ -31,9 +30,11 @@ export const Header = () => {
                 <Sun className="w-4 h-4 block dark:hidden" />
                 <Moon className="w-4 h-4 hidden dark:block" />
               </Button>
-              <Button variant="secondary" className="bg-gray-100 border-gray-300 text-gray-900 hover:bg-gray-200 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:hover:bg-slate-600">
-                Login
-              </Button>
+              <Link href={'/login'}>
+                <Button variant="secondary" className="bg-gray-100 border-gray-300 text-gray-900 hover:bg-gray-200 dark:bg-slate-700 dark:border-slate-600 dark:text-white dark:hover:bg-slate-600">
+                  Login
+                </Button>
+              </Link>
             </nav>
 
             {/* Mobile Navigation */}

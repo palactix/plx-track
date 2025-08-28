@@ -1,10 +1,6 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Copy, BarChart3, Users, Shield, Zap, Code, TrendingUp, Eye, Share2, RefreshCw, ChevronUp, ChevronDown, Calendar, Lightbulb, Info, Sun, Moon, Menu, X } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { LinkGenerator } from '@/components/common/links/link-generator';
 
 export function HeroSection (){
@@ -12,7 +8,7 @@ export function HeroSection (){
 		<section className="relative px-4 py-16 sm:px-6 lg:px-8">
 			<div className="mx-auto max-w-4xl text-center">
 				<div className="mb-8">
-					<Badge variant="secondary" className="mb-6 border-primary/30 bg-primary/20 px-4 py-2 text-secondary">
+					<Badge variant="secondary" className="mb-6 border-primary/30 bg-primary/20 px-4 py-2 dark:text-secondary">
 						<Share2 className="mr-2 h-4 w-4" />
 					Shorten, Share, Track
 				</Badge>

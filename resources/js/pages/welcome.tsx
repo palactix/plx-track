@@ -4,6 +4,7 @@ import { CheckCircle, BarChart3, Users, Shield, Zap, Code, Globe } from 'lucide-
 import { Header } from '@/components/common/public/header';
 import { HeroSection } from '@/components/views/landing/hero-section';
 import { RecentLinks } from '@/components/views/landing/recent-links';
+import { Footer } from '@/components/common/public/footer';
 // import { Analytics } from '@/components/Analytics';
 
 export default function App() {  
@@ -77,22 +78,7 @@ export default function App() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 mt-8 sm:mt-16">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-4 sm:gap-6">
-              <span className="text-gray-500 dark:text-slate-400">© Palactix</span>
-              <a href="#" className="text-gray-500 dark:text-slate-400 hover:text-primary transition-colors flex items-center gap-1">
-                <Code className="w-4 h-4" />
-                GitHub
-              </a>
-            </div>
-            <div className="text-gray-500 dark:text-slate-400 text-center sm:text-right text-sm">
-              Open-source license notice (MIT)
-            </div>
-          </div>
-        </div>
-      </footer>
+     <Footer />
     </div>
   );
 }
