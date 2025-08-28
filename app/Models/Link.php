@@ -46,6 +46,16 @@ class Link extends Model
     }
 
     // Relationships
+    public function clicks()
+    {
+        return $this->hasMany(Click::class);
+    }
+
+    public function analytics()
+    {
+        return $this->hasMany(ClickAnalytics::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -61,12 +71,24 @@ class Link extends Model
         return $shortCode;
     }
 
-    public function incrementClicks(): void
+    public function incrementClicks(bool $isUnique = false): void
     {
         $this->increment('clicks_count');
+        if ($isUnique) {
+            $this->increment('unique_clicks_count');
+        }
         $this->update(['last_clicked_at' => now()]);
     }
 
+    public function incrementUniqueClicks()
+    {
+        $this->increment('unique_clicks_count');
+    }
+
+    public function getIsExpiredAttribute()
+    {
+        return $this->expires_at && $this->expires_at->isPast();
+    }
     public function isExpired(): bool
     {
         return $this->expires_at && $this->expires_at->isPast();
@@ -77,6 +99,10 @@ class Link extends Model
         return !empty($this->password_hash);
     }
 
+    public function canBeAccessed(): bool
+    {
+        return $this->is_active && !$this->getIsExpiredAttribute();
+    }
     public function checkPassword(string $password): bool
     {
         return Hash::check($password, $this->password_hash);
@@ -90,8 +116,18 @@ class Link extends Model
     // Scopes
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('is_active', true)
+                    ->where(function($q) {
+                        $q->whereNull('expires_at')
+                          ->orWhere('expires_at', '>', now());
+                    });
     }
+
+    public function scopePublic($query)
+    {
+        return $query->whereNull('user_id');
+    }
+
 
     public function scopeNotExpired($query)
     {

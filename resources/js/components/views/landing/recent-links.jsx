@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { BarChart3, Copy, Eye, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from '@inertiajs/react';
 import { recentLinksQueryFn, recentLinksQueryKey } from '@/queries/links/use-links';
 
 export function RecentLinks() {
@@ -19,6 +20,23 @@ export function RecentLinks() {
   const items = query.data?.data.items || [];
   const meta = query.data?.data.meta;
   const isEmpty = !query.isLoading && items.length === 0;
+
+  const copyToClipboard = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success('Copied to clipboard!');
+    } catch (error) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      toast.success('Copied to clipboard!');
+    }
+  };
+
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 mb-8">
@@ -95,18 +113,20 @@ export function RecentLinks() {
                       variant="ghost"
                       className="w-8 h-8 p-0 text-gray-500 dark:text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
                       title="Copy Link"
+                      onClick={() => copyToClipboard(link.short_code)}
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
-                    <Button 
-                      size="icon"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 text-secondary hover:text-white rounded-lg bg-primary/20 hover:bg-primary/30"
-                      onClick={() => setCurrentPage && setCurrentPage('analytics')}
-                      title="View Analytics"
-                    >
-                      <BarChart3 className="w-4 h-4 text-secondary" />
-                    </Button>
+                    <Link href={`links/analytics/${link.short_code}`}>
+                      <Button 
+                        size="icon"
+                        variant="ghost"
+                        className="w-8 h-8 p-0 text-secondary hover:text-white rounded-lg bg-primary/20 hover:bg-primary/30 cursor-pointer"
+                        title="View Analytics"
+                      >
+                        <BarChart3 className="w-4 h-4 text-secondary" />
+                      </Button>
+                    </Link>
                   </div>
                 </div>
                 

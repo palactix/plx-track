@@ -6,6 +6,7 @@ use App\Http\Requests\StoreLinkRequest;
 use App\Models\Link;
 use App\Services\MetadataFetcher;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class LinkController extends Controller
 {
@@ -102,5 +103,11 @@ class LinkController extends Controller
                 ]
             ]
         ]);
+    }
+
+
+    public function publicAnalytics()
+    {
+        return Inertia::render('analytics');
     }
 }
