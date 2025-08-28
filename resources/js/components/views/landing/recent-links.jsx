@@ -1,14 +1,17 @@
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BarChart3, Copy, Eye, RefreshCw } from 'lucide-react';
+import { BarChart3, Check, Copy, Eye, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@inertiajs/react';
+import { toast } from 'react-hot-toast';
 import { recentLinksQueryFn, recentLinksQueryKey } from '@/queries/links/use-links';
+import { CopyButton } from '@/components/common/links/copy';
 
 export function RecentLinks() {
   const [page, setPage] = useState(1);
+  
   const perPage = 10;
   const query = useQuery({
     queryKey: recentLinksQueryKey(page, perPage),
@@ -21,21 +24,7 @@ export function RecentLinks() {
   const meta = query.data?.data.meta;
   const isEmpty = !query.isLoading && items.length === 0;
 
-  const copyToClipboard = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success('Copied to clipboard!');
-    } catch (error) {
-      // Fallback for older browsers
-      const textArea = document.createElement('textarea');
-      textArea.value = text;
-      document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
-      toast.success('Copied to clipboard!');
-    }
-  };
+  
 
 
   return (
@@ -89,6 +78,10 @@ export function RecentLinks() {
                         </span>
                         <span>•</span>
                         <span>{new Date(link.created_at).toLocaleString()}</span>
+                        <span>•</span>
+                        <span className="font-mono text-xs text-primary bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded">
+                          {link.short_code}
+                        </span>
                       </div>
                       <div className="text-sm text-gray-500 dark:text-slate-400 truncate overflow-hidden whitespace-nowrap max-w-full">
                         {link.description || link.original_url}
@@ -100,23 +93,17 @@ export function RecentLinks() {
                     <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-slate-700/50 text-xs text-gray-700 dark:text-slate-300 font-medium">
                       {link.clicks_count} clicks
                     </span>
-                    <Button 
-                      size="icon"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 text-gray-500 dark:text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
-                      title="Preview"
-                    >
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      size="icon"
-                      variant="ghost"
-                      className="w-8 h-8 p-0 text-gray-500 dark:text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg"
-                      title="Copy Link"
-                      onClick={() => copyToClipboard(link.short_code)}
-                    >
-                      <Copy className="w-4 h-4" />
-                    </Button>
+                    <a href={`/${link.short_code}`}>
+                      <Button 
+                        size="icon"
+                        variant="ghost"
+                        className="w-8 h-8 p-0 text-gray-500 dark:text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer"
+                        title="Preview"
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                    </a>
+                    <CopyButton link={link} />
                     <Link href={`links/analytics/${link.short_code}`}>
                       <Button 
                         size="icon"

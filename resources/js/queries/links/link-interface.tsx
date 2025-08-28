@@ -4,6 +4,7 @@ export interface Link {
   id: string;
   title: string;
   url: string;
+  short_code: string;
   createdAt: string;
   updatedAt: string;
 }

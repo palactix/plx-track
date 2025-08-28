@@ -23,13 +23,10 @@ class RedirectController extends Controller
      */
     public function redirect(Request $request, string $code): RedirectResponse|View
     {
-        // Find link by short code or custom alias
+        // Find link by short code
         $link = Link::where('short_code', $code)
-                   ->orWhere('custom_alias', $code)
                    ->first();
-
         if (!$link) {
-            
             abort(404, 'Short link not found');
         }
 
