@@ -2,28 +2,31 @@ import { Button } from '@/components/ui/button';
 import { Sun, Moon, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from '@inertiajs/react';
+import { useAppearance } from '@/hooks/use-appearance';
 
 export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { toggleAppearance } = useAppearance();
+  
 
   return (
     <header className="border-b border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex  h-10 w-25 items-center justify-center">
-               <a href='/'><img src='/logo/plx-track-logo.svg' alt='App Logo' /></a>
+               <Link href='/'><img src='/logo/plx-track-logo.svg' alt='App Logo' /></Link>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden sm:flex items-center space-x-8">
-              <a href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">About</a>
-              <a href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">GitHub</a>
-              <a href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">Docs</a>
+              <Link href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">About</Link>
+              <Link href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">GitHub</Link>
+              <Link href="#" className="text-gray-600 dark:text-slate-300 hover:text-primary transition-colors">Docs</Link>
               {/* Theme Toggle (uses prefers-color-scheme) */}
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => document.documentElement.classList.toggle('dark')}
+                onClick={() => toggleAppearance()}
                 className="w-9 h-9 p-0 text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700"
                 title="Toggle theme"
               >
@@ -43,7 +46,7 @@ export const Header = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => document.documentElement.classList.toggle('dark')}
+                onClick={() => toggleAppearance()}
                 className="w-9 h-9 p-0 text-gray-600 dark:text-slate-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700"
                 title="Toggle theme"
               >
