@@ -23,7 +23,7 @@ export function HeroSection (){
 				</p>
 			</div>
 			{/* URL Shortener Form */}
-			<Card className="mx-auto max-w-4xl border-gray-200 bg-white dark:border-slate-700 dark:bg-slate-800">
+			<Card className="mx-auto max-w-4xl">
 				<CardContent className="p-4 sm:p-6">
 					<LinkGenerator />
 				</CardContent>

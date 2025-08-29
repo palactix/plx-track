@@ -25,5 +25,5 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 });
 
-Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', '[a-zA-Z0-9-_]+')->name('link.redirect');
+Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', expression: '[a-zA-Z0-9-_]+')->name('link.redirect');
 

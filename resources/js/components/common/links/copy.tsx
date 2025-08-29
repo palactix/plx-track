@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export function CopyButton({ link }: { link: Link }) {
-  const [copiedLinkId, setCopiedLinkId] = useState<null|string>(null);
+  const [copiedLinkId, setCopiedLinkId] = useState<null|number>(null);
 
   const copyToClipboard = async (link: Link) => {
     const fullUrl = `${window.location.origin}/${link.short_code}`;

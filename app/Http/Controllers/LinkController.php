@@ -106,8 +106,82 @@ class LinkController extends Controller
     }
 
 
-    public function publicAnalytics()
+    public function publicAnalytics($code)
     {
-        return Inertia::render('analytics');
+        $link = Link::where('short_code', $code)
+            ->where('is_active', true)
+            ->whereNull('deleted_at')
+            ->first();
+
+        if (!$link) {
+            abort(404, 'Link not found');
+        }
+
+        // Get click analytics for the last 7 days
+        $clicksData = $link->clicks()
+            ->where('created_at', '>=', now()->subDays(7))
+            ->selectRaw('DATE(created_at) as date, COUNT(*) as clicks')
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'date' => \Carbon\Carbon::parse($item->date)->format('M d'),
+                    'clicks' => (int) $item->clicks
+                ];
+            });
+
+        // Get recent clicks (last 7 days)
+        $recentClicks = $link->clicks()
+            ->where('created_at', '>=', now()->subDays(7))
+            ->latest()
+            ->take(10)
+            ->get()
+            ->map(function ($click) {
+                return [
+                    'dateTime' => $click->created_at->format('M d, Y g:i A'),
+                    'location' => $click->ip_address,
+                    'browser' => $click->user_agent ? $this->parseBrowser($click->user_agent) : 'Unknown',
+                    'source' => $click->referrer ?: 'Direct',
+                    "platform" => $click->platform ?: 'Unknown',
+                ];
+            });
+
+        return Inertia::render('analytics', [
+            'link' => [
+                'id' => $link->id,
+                'short_code' => $link->short_code,
+                'original_url' => $link->original_url,
+                'title' => $link->title,
+                'description' => $link->description,
+                'og_image_url' => $link->og_image_url,
+                'clicks_count' => $link->clicks_count,
+                'created_at' => $link->created_at->format('M d, Y \a\t g:i A'),
+                'short_url' => route("link.redirect", $link->short_code)
+            ],
+            'analytics' => [
+                'total_clicks' => $link->clicks_count,
+                'last_7_days_clicks' => $clicksData->sum('clicks'),
+                'chart_data' => $clicksData,
+                'recent_clicks' => $recentClicks
+            ]
+        ]);
+    }
+
+    private function parseBrowser($userAgent)
+    {
+        if (stripos($userAgent, needle: 'firefox') !== false) {
+            return 'Firefox';
+        } elseif (stripos($userAgent, 'chrome') !== false) {
+            return 'Chrome';
+        } elseif (stripos($userAgent, 'safari') !== false) {
+            return 'Safari';
+        } elseif (stripos($userAgent, 'edge') !== false) {
+            return 'Edge';
+        } elseif (stripos($userAgent, 'opera') !== false) {
+            return 'Opera';
+        } else {
+            return 'Unknown';
+        }
     }
 }

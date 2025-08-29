@@ -1,11 +1,10 @@
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { BarChart3, Check, Copy, Eye, RefreshCw } from 'lucide-react';
+import { BarChart3, Eye, RefreshCw, Globe, ExternalLink } from 'lucide-react';
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@inertiajs/react';
-import { toast } from 'react-hot-toast';
 import { recentLinksQueryFn, recentLinksQueryKey } from '@/queries/links/use-links';
 import { CopyButton } from '@/components/common/links/copy';
 
@@ -23,8 +22,6 @@ export function RecentLinks() {
   const items = query.data?.data.items || [];
   const meta = query.data?.data.meta;
   const isEmpty = !query.isLoading && items.length === 0;
-
-  
 
 
   return (
@@ -57,69 +54,69 @@ export function RecentLinks() {
         )}
         <div className="space-y-4">
           {items.map((link) => (
-            <Card key={link.id} className="bg-white border-gray-200 dark:bg-slate-800 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-700/50 transition-all duration-300">
-              <CardContent className="">
-                <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                  {/* Main content (image + info) */}
-                  <div className="flex flex-1 gap-4 max-w-[70vw] sm:max-w-[600px]">
-                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200 dark:bg-slate-700 flex items-center justify-center">
-                      <ImageWithFallback
-                        src={link.og_image_url}
-                        alt={`${link.domain} preview`}
-                        className="w-full h-full object-cover"
-                      />
+            <div key={link.id} className="group">
+              <Card className=" py-0  hover:border-slate-300 dark:hover:border-slate-600 transition-colors rounded-xl">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-4">
+                    {/* Icon */}
+                    <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center">
+                      <ImageWithFallback src={link.og_image_url} alt={link.title} className="" />
                     </div>
+                    
+                    {/* Main content */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 dark:text-white mb-1 truncate overflow-hidden whitespace-nowrap max-w-full">{link.title}</h3>
-                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-500 dark:text-slate-400 mb-2">
-                        <span className="flex items-center gap-1">
-                          <span className="w-2 h-2 rounded-full bg-secondary"></span>
-                          {new URL(link.original_url).host}
-                        </span>
-                        <span>•</span>
-                        <span>{new Date(link.created_at).toLocaleString()}</span>
-                        <span>•</span>
-                        <span className="font-mono text-xs text-primary bg-gray-100 dark:bg-slate-700 px-2 py-0.5 rounded">
-                          {link.short_code}
-                        </span>
+                      <div className="flex items-center gap-3 mb-1">
+                        <span className="font-medium text-sm text-slate-900 dark:text-white">{`${window.location.host}/${link.short_code}`}</span>
+                        <CopyButton link={link.short_code} />
                       </div>
-                      <div className="text-sm text-gray-500 dark:text-slate-400 truncate overflow-hidden whitespace-nowrap max-w-full">
-                        {link.description || link.original_url}
+                      <div className="flex items-center text-sm text-slate-500 dark:text-slate-400">
+                        <ExternalLink className="h-3 w-3 mr-1 flex-shrink-0" />
+                        <a
+                          href={`/${link.short_code}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="truncate hover:text-slate-700 dark:hover:text-slate-300 transition-colors"
+                        >
+                          {link.original_url.replace(/^https?:\/\//, '')}
+                        </a>
                       </div>
                     </div>
+                    
+                    {/* Clicks counter */}
+                    <div className="flex-shrink-0 flex items-center gap-1 text-sm text-slate-600 dark:text-slate-300">
+                      <BarChart3 className="h-4 w-4 text-primary dark:text-primary-400" />
+                      <span className="font-medium">{link.clicks_count}</span>
+                      <span className="text-slate-500 dark:text-slate-400">clicks</span>
+                    </div>
+                    
+                    {/* Actions */}
+                    <div className="flex-shrink-0 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <a href={`/${link.short_code}`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-2 text-primary dark:text-primary-400 hover:bg-primary/20 dark:hover:bg-primary/20"
+                        >
+                          <Eye className="h-3 w-3" />
+                        </Button>
+                      </a>
+                      <Link href={`links/analytics/${link.short_code}`}>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 px-2 text-primary dark:text-primary-400 hover:bg-primary/20 dark:hover:bg-primary/20"
+                        >
+                          <BarChart3 className="h-3 w-3" />
+                        </Button>
+                      </Link>
+                    </div>
                   </div>
-                  {/* Stats/actions row, stacks below on mobile, right on desktop */}
-                  <div className="flex items-center gap-2 mt-2 sm:mt-0 sm:ml-auto order-last sm:order-none">
-                    <span className="px-2 py-0.5 rounded-full bg-gray-100 dark:bg-slate-700/50 text-xs text-gray-700 dark:text-slate-300 font-medium">
-                      {link.clicks_count} clicks
-                    </span>
-                    <a href={`/${link.short_code}`}>
-                      <Button 
-                        size="icon"
-                        variant="ghost"
-                        className="w-8 h-8 p-0 text-gray-500 dark:text-slate-400 hover:text-primary hover:bg-gray-100 dark:hover:bg-slate-700 rounded-lg cursor-pointer"
-                        title="Preview"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </Button>
-                    </a>
-                    <CopyButton link={link} />
-                    <Link href={`links/analytics/${link.short_code}`}>
-                      <Button 
-                        size="icon"
-                        variant="ghost"
-                        className="w-8 h-8 p-0 text-secondary hover:text-white rounded-lg bg-primary/20 hover:bg-primary/30 cursor-pointer"
-                        title="View Analytics"
-                      >
-                        <BarChart3 className="w-4 h-4 text-secondary" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-                
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           ))}
+
+          
         </div>
         {meta && meta.last_page > 1 && (
           <div className="mt-6 flex items-center justify-center gap-3">
