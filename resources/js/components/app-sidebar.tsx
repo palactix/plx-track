@@ -16,12 +16,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Links',
-        href: dashboard(),
+        href: "/links",
         icon: LayoutGrid,
     },
     {
         title: 'Analytics',
-        href: dashboard(),
+        href: "analytics",
         icon: LayoutGrid,
     },
 ];
@@ -29,12 +29,12 @@ const mainNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
     {
         title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
+        href: 'https://github.com/palactic/plx-track',
         icon: Folder,
     },
     {
         title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
+        href: 'https://jitendra.dev',
         icon: BookOpen,
     },
 ];

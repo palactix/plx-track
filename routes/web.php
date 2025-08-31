@@ -3,6 +3,7 @@
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\RedirectController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RenderController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,7 +18,6 @@ Route::get('/links/analytics/{code}', [LinkController::class, 'publicAnalytics']
 // API routes for AJAX requests
 Route::middleware('api')->group(function () {
     Route::post('/links', [LinkController::class, 'store'])->name('links.store');
-    Route::get('/links', [LinkController::class, 'index'])->name('links.index');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -25,10 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
 
-    // Dashboard API routes
-    Route::get('/api/dashboard/overview-stats', [DashboardController::class, 'getOverviewStats']);
-    Route::get('/api/dashboard/chart-data', [DashboardController::class, 'getChartData']);
-    Route::get('/api/dashboard/recent-links', [DashboardController::class, 'getRecentLinks']);
+    Route::get("links", RenderController::class)->name('links.index');
+
 });
 
 Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', expression: '[a-zA-Z0-9-_]+')->name('link.redirect');
