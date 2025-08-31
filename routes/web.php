@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\RedirectController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -23,6 +24,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Dashboard API routes
+    Route::get('/api/dashboard/overview-stats', [DashboardController::class, 'getOverviewStats']);
+    Route::get('/api/dashboard/chart-data', [DashboardController::class, 'getChartData']);
+    Route::get('/api/dashboard/recent-links', [DashboardController::class, 'getRecentLinks']);
 });
 
 Route::get('/{shortCode}', [RedirectController::class, 'redirect'])->where('shortCode', expression: '[a-zA-Z0-9-_]+')->name('link.redirect');
