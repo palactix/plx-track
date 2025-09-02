@@ -16,6 +16,7 @@ require __DIR__.'/auth.php';
 
 Route::get('/links/analytics/{code}', [LinkController::class, 'publicAnalytics'])->name('links.analytics');
 // API routes for AJAX requests
+Route::get("public-links", [LinkController::class, "index"])->name('public-links.index');
 Route::middleware('api')->group(function () {
     Route::post('/links', [LinkController::class, 'store'])->name('links.store');
 });

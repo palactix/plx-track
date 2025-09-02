@@ -95,6 +95,8 @@ export default function Analytics() {
       margin: { top: 5, right: 30, left: 20, bottom: 5 }
     };
 
+    console.log(commonProps);
+
     switch (chartType) {
       case 'line':
         return (

@@ -126,7 +126,7 @@ class LinkController extends Controller
             ->get()
             ->map(function ($item) {
                 return [
-                    'date' => \Carbon\Carbon::parse($item->date)->format('M d'),
+                    'date' => \Carbon\Carbon::parse($item->date)->format('M j'),
                     'clicks' => (int) $item->clicks
                 ];
             });
