@@ -49,8 +49,24 @@ export default function LinkPage() {
   }, []);
 
   const handleDelete = useCallback((link: Link) => {
-    // TODO: Implement delete functionality
-    console.log('Delete link:', link);
+    fetch(`/api/links/${link.id}`, { 
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+        },
+     })
+      .then(response => {
+        if (response.ok) {
+          // Optionally refetch links or update state
+          console.log('Link deleted successfully');
+        } else {
+          console.error('Failed to delete link');
+        }
+      })
+      .catch(error => {
+        console.error('Error deleting link:', error);
+      });
   }, []);
 
   const handleCopy = useCallback((link: Link) => {

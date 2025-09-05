@@ -16,5 +16,6 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::get('/links', [LinkController::class, 'index']);
     Route::get('/links/{code}/analytics', [LinkController::class, 'analytics']);
+    Route::delete('/links/{link}', [LinkController::class, 'delete']);
 });
 

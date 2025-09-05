@@ -66,4 +66,15 @@ class LinkController extends ApiController
 
         return response()->json(new LinkAnalyticsResource($analytics));
     }
+
+
+    public function delete(Link $link)
+    {
+        $this->authorize('delete', $link);
+
+        $link->delete();
+
+        return response()->json(['message' => 'Link deleted successfully.'], 200);
+
+    }
 }
