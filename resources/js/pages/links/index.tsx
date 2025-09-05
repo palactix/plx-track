@@ -1,6 +1,14 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import AppLayout from "@/layouts/app-layout";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { LinkGenerator } from '@/components/common/links/link-generator';
 import { useLinks } from '@/queries/links/use-links';
 import { SearchAndFilter, FilterOptions } from '@/components/common/search-and-filter';
 import { LinksList } from '@/components/links/links-list';
@@ -92,9 +100,21 @@ export default function LinkPage() {
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Links</h1>
             <p className="text-gray-600 dark:text-gray-400 mt-2">Manage and track your shortened links</p>
           </div>
-          <Button>
-            Create New Link
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                Create New Link
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create New Link</DialogTitle>
+              </DialogHeader>
+              <div className="pt-2">
+                <LinkGenerator />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
 
         {/* Search and Filter */}

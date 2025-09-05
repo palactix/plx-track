@@ -19,11 +19,11 @@ const mainNavItems: NavItem[] = [
         href: "/links",
         icon: LayoutGrid,
     },
-    {
-        title: 'Analytics',
-        href: "analytics",
-        icon: LayoutGrid,
-    },
+    // {
+    //     title: 'Analytics',
+    //     href: "analytics",
+    //     icon: LayoutGrid,
+    // },
 ];
 
 const footerNavItems: NavItem[] = [
