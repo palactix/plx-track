@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -121,6 +122,22 @@ class Link extends Model
                         $q->whereNull('expires_at')
                           ->orWhere('expires_at', '>', now());
                     });
+    }
+
+    /**
+     * Scope a query to links owned by a given user id.
+     */
+    public function scopeOwnedBy($query, $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    /**
+     * Scope for the currently authenticated user's links.
+     */
+    public function scopeMyLink($query)
+    {
+        return $query->ownedBy(Auth::id());
     }
 
     public function scopePublic($query)

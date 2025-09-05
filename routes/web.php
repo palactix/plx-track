@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get("links", RenderController::class)->name('links.index');
+    Route::get("links/analytics/{code}", RenderController::class)->name('links.analytics');
 
 });
 

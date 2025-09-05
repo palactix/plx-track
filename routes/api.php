@@ -15,5 +15,6 @@ Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/dashboard/recent-links', [DashboardController::class, 'getRecentLinks']);
 
     Route::get('/links', [LinkController::class, 'index']);
+    Route::get('/links/{code}/analytics', [LinkController::class, 'analytics']);
 });
 

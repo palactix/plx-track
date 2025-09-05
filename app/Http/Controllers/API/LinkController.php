@@ -2,13 +2,23 @@
 namespace App\Http\Controllers\API;
 
 use App\Models\Link;
-use Illuminate\Support\Facades\Auth;
+use App\Services\LinkAnalyticsService;
+use App\Http\Resources\LinkAnalyticsResource;
+use Illuminate\Http\JsonResponse;
 
 class LinkController extends ApiController
 {
+    protected LinkAnalyticsService $analyticsService;
+
+    public function __construct(LinkAnalyticsService $analyticsService)
+    {
+        $this->analyticsService = $analyticsService;
+        parent::__construct();
+    }
+
     public function index()
     {
-        $query = Link::where('user_id', $this->userId);
+        $query = Link::myLink();
 
         // Filtering
         if ($search = request('search')) {
@@ -35,5 +45,25 @@ class LinkController extends ApiController
 
         return response()->json($links);
     }
+
+
+    /**
+     * Return analytics for a link by short code.
+     *
+     * @param string $code
+     * @return JsonResponse
+     */
+    public function analytics(string $code): JsonResponse
+    {
+        $link = Link::myLink()
+            ->where('short_code', $code)
+            ->where('is_active', true)
+            ->firstOrFail();
+        
+        $this->authorize('view', $link);
+
+        $analytics = $this->analyticsService->getAnalytics($link);
+
+        return response()->json(new LinkAnalyticsResource($analytics));
+    }
 }
-?>

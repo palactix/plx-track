@@ -22,8 +22,7 @@ export const LinksList: React.FC<LinksListProps> = React.memo(({
   onBulkDeactivate,
   onEdit,
   onDelete,
-  onCopy,
-  onViewAnalytics,
+  onCopy
 }) => {
   const [selectedLinks, setSelectedLinks] = useState<Set<number>>(new Set());
 
@@ -173,7 +172,6 @@ export const LinksList: React.FC<LinksListProps> = React.memo(({
             onEdit={onEdit || (() => {})}
             onDelete={onDelete || (() => {})}
             onCopy={onCopy || (() => {})}
-            onViewAnalytics={onViewAnalytics || (() => {})}
           />
         ))}
       

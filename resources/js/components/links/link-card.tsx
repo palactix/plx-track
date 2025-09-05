@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Link } from '@/queries/links/link-interface';
 import { CopyButton } from '../common/links/copy';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { Link as LinkHref } from '@inertiajs/react';
 
 interface LinkCardProps {
   link: Link;
@@ -18,7 +19,6 @@ interface LinkCardProps {
   onEdit: (link: Link) => void;
   onDelete: (link: Link) => void;
   onCopy: (link: Link) => void;
-  onViewAnalytics: (link: Link) => void;
 }
 
 export const LinkCard: React.FC<LinkCardProps> = React.memo(({
@@ -27,8 +27,7 @@ export const LinkCard: React.FC<LinkCardProps> = React.memo(({
   onSelect,
   onEdit,
   onDelete,
-  onCopy,
-  onViewAnalytics,
+  onCopy
 }) => {
   const handleSelectChange = useCallback((checked: boolean) => {
     onSelect(link.id, checked);
@@ -46,9 +45,6 @@ export const LinkCard: React.FC<LinkCardProps> = React.memo(({
     onCopy(link);
   }, [link, onCopy]);
 
-  const handleViewAnalytics = useCallback(() => {
-    onViewAnalytics(link);
-  }, [link, onViewAnalytics]);
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 hover:shadow-md transition-shadow duration-300">
@@ -121,11 +117,13 @@ export const LinkCard: React.FC<LinkCardProps> = React.memo(({
                 </svg>
                 Copy Link
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleViewAnalytics}>
-                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                View Analytics
+              <DropdownMenuItem>
+                <LinkHref href={`/links/analytics/${link.short_code}`} className="flex">
+                  <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  Analytics
+                </LinkHref>
               </DropdownMenuItem>
               <DropdownMenuItem variant="destructive" onClick={handleDelete}>
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

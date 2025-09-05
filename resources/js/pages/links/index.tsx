@@ -58,10 +58,6 @@ export default function LinkPage() {
     // TODO: Show toast notification
   }, []);
 
-  const handleViewAnalytics = useCallback((link: Link) => {
-    // TODO: Navigate to analytics page
-    console.log('View analytics for:', link);
-  }, []);
 
   const links = useMemo(() => data?.data || [], [data]);
   const pagination = useMemo(() => ({
@@ -102,7 +98,6 @@ export default function LinkPage() {
           onEdit={handleEdit}
           onDelete={handleDelete}
           onCopy={handleCopy}
-          onViewAnalytics={handleViewAnalytics}
         />
 
         {/* Pagination */}
